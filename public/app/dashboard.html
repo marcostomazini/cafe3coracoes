@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <meta name="description" content="Bootstrap Admin App + jQuery">
+   <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
+   <title>Angle - Bootstrap Admin Template</title>
+   <!-- =============== VENDOR STYLES ===============-->
+   <!-- FONT AWESOME-->
+   <link rel="stylesheet" href="../vendor/fontawesome/css/font-awesome.min.css">
+   <!-- SIMPLE LINE ICONS-->
+   <link rel="stylesheet" href="../vendor/simple-line-icons/css/simple-line-icons.css">
+   <!-- ANIMATE.CSS-->
+   <link rel="stylesheet" href="../vendor/animate.css/animate.min.css">
+   <!-- WHIRL (spinners)-->
+   <link rel="stylesheet" href="../vendor/whirl/dist/whirl.css">
+   <!-- =============== PAGE VENDOR STYLES ===============-->
+   <!-- =============== BOOTSTRAP STYLES ===============-->
+   <link rel="stylesheet" href="css/bootstrap.css" id="bscss">
+   <!-- =============== APP STYLES ===============-->
+   <link rel="stylesheet" href="css/app.css" id="maincss">
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+<script>
+        var socket = io.connect()
+        var i = 1;
+        socket.on('stream', function(tweet){
+          i++;
+          if (i % 2 == 0) {
+            $(".timeline").prepend('<li><div class="timeline-badge primary"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover left"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
+          } else {
+            $(".timeline").prepend('<li class="timeline-inverted"><div class="timeline-badge primary"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover right"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
+          }         
+       });
+</script>
+<body>   
+   <div class="wrapper">
+         <!-- Page content-->
+         <div class="content-wrapper">
+            <h3>Timeline</h3>
+            <!-- START timeline-->
+            <!-- ul.timeline-alt-->
+
+            <div id="data">-</div>
+
+            <ul class="timeline">
+               
+               <!-- <li data-datetime="Now" class="timeline-separator"></li> -->
+               <!-- START timeline item-->
+               
+               <!-- END timeline item-->
+               <!-- START timeline item-->
+               <li class="timeline-end">
+                  <a href="#" class="timeline-badge">
+                     <em class="fa fa-plus"></em>
+                  </a>
+               </li>
+               <!-- END timeline item-->
+            </ul>
+            <!-- END timeline-->
+         </div>
+      <!-- Page footer-->
+      <footer>
+         <span>&copy; 2015 - Angle</span>
+      </footer>
+   </div>
+   <!-- =============== VENDOR SCRIPTS ===============-->
+   <!-- MODERNIZR-->
+   <script src="../vendor/modernizr/modernizr.js"></script>
+   <!-- JQUERY-->
+   <script src="../vendor/jquery/dist/jquery.js"></script>
+   <!-- BOOTSTRAP-->
+   <script src="../vendor/bootstrap/dist/js/bootstrap.js"></script>
+   <!-- STORAGE API-->
+   <script src="../vendor/jQuery-Storage-API/jquery.storageapi.js"></script>
+   <!-- JQUERY EASING-->
+   <script src="../vendor/jquery.easing/js/jquery.easing.js"></script>
+   <!-- ANIMO-->
+   <script src="../vendor/animo.js/animo.js"></script>
+   <!-- SLIMSCROLL-->
+   <script src="../vendor/slimScroll/jquery.slimscroll.min.js"></script>
+   <!-- SCREENFULL-->
+   <script src="../vendor/screenfull/dist/screenfull.js"></script>
+   <!-- LOCALIZE-->
+   <script src="../vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>
+   <!-- RTL demo-->
+   <script src="js/demo/demo-rtl.js"></script>
+   <!-- =============== PAGE VENDOR SCRIPTS ===============-->
+   <!-- =============== APP SCRIPTS ===============-->
+   <script src="js/app.js"></script>
+</body>
+
+</html>

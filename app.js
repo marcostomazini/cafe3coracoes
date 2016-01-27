@@ -10,7 +10,7 @@ var express = require('express')
   ,Twit = require('twit')
   , io = require('socket.io').listen(server);
 
-   server.listen(8080);
+   server.listen(3000);
 
   app.use(express.static(__dirname + '/public'));
 
@@ -18,7 +18,7 @@ var express = require('express')
       res.sendFile(__dirname + '/index.html');
 });
 
-var target = ['cricket'];
+var target = ['cpbr9'];
  var api = new Twit({
     consumer_key:         'okfPHS3Hgdedz0S0bvutrmDNl'
   , consumer_secret:      '7CYNEAA2WyDlHIW3Hx8M51FUV8ZMvECuTu5X6nhaUB45oyjQJq'
@@ -27,14 +27,10 @@ var target = ['cricket'];
 })
 
  
-var stream = api.stream('statuses/sample')
-
-api.get('search/tweets', { q: 'banana since:2011-11-11', count: 100 }, function(err, data, response) {
-  console.log(data)
-})
+var stream = api.stream('statuses/filter', { track: target })
 
 stream.on('tweet', function (tweet) {
-  console.log(tweet)
+  //console.log(tweet.text)
 })
 
 io.sockets.on('connection', function (socket) {
@@ -42,8 +38,8 @@ io.sockets.on('connection', function (socket) {
  var stream = api.stream('statuses/filter', { track: target })
 
   stream.on('tweet', function (tweet) {
-    console.log(tweet);
+    console.log(tweet.text);
+    console.log(tweet.user.screen_name);
     io.sockets.emit('stream',tweet);
-
   });
  });
