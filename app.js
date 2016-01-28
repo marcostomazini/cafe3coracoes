@@ -7,19 +7,22 @@ var express = require('express')
   , app = express()
   , http = require('http')
   , server = http.createServer(app)
-  ,Twit = require('twit')
+  , Twit = require('twit')
+  , target = ['cpbr9']
   , io = require('socket.io').listen(server);
 
-   server.listen(3000);
+app.use(express.static(__dirname + '/public'));
 
-  app.use(express.static(__dirname + '/public'));
-
- app.get('/', function (req, res) {
-      res.sendFile(__dirname + '/index.html');
+app.get('/set/:hashtag', function (req, res) {
+  if (req.params.hashtag != null) {
+    target = ['#CPBR9', req.params.hashtag.toUpperCase()];
+  }
+  res.sendFile(__dirname + '/');
 });
 
-var target = ['cpbr9'];
- var api = new Twit({
+server.listen(3000);
+
+var api = new Twit({
     consumer_key:         'okfPHS3Hgdedz0S0bvutrmDNl'
   , consumer_secret:      '7CYNEAA2WyDlHIW3Hx8M51FUV8ZMvECuTu5X6nhaUB45oyjQJq'
   , access_token:         '179249265-LKqFINxf4f7R3Mubde7jBAYYsdP8HCUH0E789Owj'
@@ -38,8 +41,11 @@ io.sockets.on('connection', function (socket) {
  var stream = api.stream('statuses/filter', { track: target })
 
   stream.on('tweet', function (tweet) {
+    console.log(target);
     console.log(tweet.text);
     console.log(tweet.user.screen_name);
-    io.sockets.emit('stream',tweet);
+    io.sockets.emit('stream', tweet);    
+
+    io.sockets.emit('pesquisa', target);
   });
  });

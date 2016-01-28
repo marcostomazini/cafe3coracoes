@@ -6,7 +6,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
    <meta name="description" content="Bootstrap Admin App + jQuery">
    <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
-   <title>Angle - Bootstrap Admin Template</title>
+   <title>Café 3 S2 - Twitter Coffee</title>
    <!-- =============== VENDOR STYLES ===============-->
    <!-- FONT AWESOME-->
    <link rel="stylesheet" href="../vendor/fontawesome/css/font-awesome.min.css">
@@ -35,12 +35,16 @@
             $(".timeline").prepend('<li class="timeline-inverted"><div class="timeline-badge primary"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover right"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
           }         
        });
+
+        socket.on('pesquisa', function(tag){
+          $('#tag').text('Timeline - Esperando por ' + tag);
+        });
 </script>
 <body>   
    <div class="wrapper">
          <!-- Page content-->
          <div class="content-wrapper">
-            <h3>Timeline</h3>
+            <h3 id="tag">Timeline</h3>
             <!-- START timeline-->
             <!-- ul.timeline-alt-->
 
