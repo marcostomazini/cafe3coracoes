@@ -8,7 +8,7 @@ var express = require('express')
   , http = require('http')
   , server = http.createServer(app)
   , Twit = require('twit')
-  , target = ['cpbr9']
+  , target = ['#CPBR9']
   , io = require('socket.io').listen(server);
 
 app.use(express.static(__dirname + '/public'));
@@ -21,6 +21,8 @@ app.get('/set/:hashtag', function (req, res) {
 });
 
 server.listen(process.env.PORT || 3000);
+//server.listen(3000);
+console.log('listando...')
 
 var api = new Twit({
     consumer_key:         'okfPHS3Hgdedz0S0bvutrmDNl'
@@ -29,14 +31,15 @@ var api = new Twit({
   , access_token_secret:  'inF9vTELjKqDvCppBPvRWP7PsWte8Z0RNDae5rcie1ObO'
 })
 
- 
-var stream = api.stream('statuses/filter', { track: target })
+var stream = api.stream('statuses/filter', { track: target });
 
 stream.on('tweet', function (tweet) {
-  //console.log(tweet.text)
-})
+  console.log(tweet.text);
+});
 
 io.sockets.on('connection', function (socket) {
+
+  console.log('cliente conectado...')
 
  var stream = api.stream('statuses/filter', { track: target })
 
