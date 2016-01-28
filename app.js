@@ -20,7 +20,7 @@ app.get('/set/:hashtag', function (req, res) {
   res.sendFile(__dirname + '/');
 });
 
-server.listen(3000);
+server.listen(process.env.PORT || 3000);
 
 var api = new Twit({
     consumer_key:         'okfPHS3Hgdedz0S0bvutrmDNl'
