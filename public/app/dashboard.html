@@ -30,9 +30,9 @@
         socket.on('stream', function(tweet){
           i++;
           if (i % 2 == 0) {
-            $(".timeline").prepend('<li><div class="timeline-badge primary"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover left"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
+            $(".timeline").prepend('<li><div class="timeline-badge primary '+tweet.coffee+'"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover left"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
           } else {
-            $(".timeline").prepend('<li class="timeline-inverted"><div class="timeline-badge primary"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover right"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
+            $(".timeline").prepend('<li class="timeline-inverted"><div class="timeline-badge primary '+tweet.coffee+'"><em class="fa fa-users"></em></div><div class="timeline-panel"><div class="popover right"><h4 class="popover-title">' + tweet.user.screen_name + '</h4><div class="arrow"></div><div class="popover-content"><img src="'+ tweet.user.profile_image_url +'" alt="Image" class="media-box-object img-circle thumb64"><p><small>' + tweet.text + '</small></p></div></div></div></li>');
           }         
        });
 

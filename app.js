@@ -9,6 +9,7 @@ var express = require('express')
   , server = http.createServer(app)
   , Twit = require('twit')
   , target = ['#CPBR9']
+  , frase = '#CPBR9'
   , io = require('socket.io').listen(server);
 
 app.use(express.static(__dirname + '/public'));
@@ -21,7 +22,6 @@ app.get('/set/:hashtag', function (req, res) {
 });
 
 server.listen(process.env.PORT || 3000);
-//server.listen(3000);
 console.log('listando...')
 
 var api = new Twit({
@@ -33,22 +33,57 @@ var api = new Twit({
 
 var stream = api.stream('statuses/filter', { track: target });
 
-stream.on('tweet', function (tweet) {
-  console.log(tweet.text);
-});
+// stream.on('tweet', function (tweet) {
+//   console.log(tweet.text);
+// });
+
+var tweets = 0;
+var tweetsArray = [1, 5, 10, 50, 100, 200];
+
+function sendCmdArduino(cmd, callback) {
+
+    return http.get({
+        host: 'google.com.br',
+        path: '/#' + cmd
+    }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+        response.on('end', function() {
+            // Data reception is done, do whatever with it!
+            //var parsed = JSON.parse(body);
+            callback({
+                enviado: cmd,
+                password: 'parsed.pass'
+            });
+        });
+    });
+
+}
 
 io.sockets.on('connection', function (socket) {
 
   console.log('cliente conectado...')
 
- var stream = api.stream('statuses/filter', { track: target })
+  var stream = api.stream('statuses/filter', { track: target });  
 
-  stream.on('tweet', function (tweet) {
-    console.log(target);
-    console.log(tweet.text);
-    console.log(tweet.user.screen_name);
-    io.sockets.emit('stream', tweet);    
+  stream.on('tweet', function (tweet) {    
+    tweets++;
 
+    //if (tweet.text.toUpperCase().indexOf(frase) > 0 && tweetsArray.indexOf(tweets) > 0) {        
+    if (tweetsArray.indexOf(tweets) > 0) {
+        tweet.coffee = 'danger';
+        // disparar um get/post
+        sendCmdArduino('ligar|forte', function(teste) {
+          debugger
+        });
+    }
+
+    console.log(tweets);
+
+    io.sockets.emit('stream', tweet);
     io.sockets.emit('pesquisa', target);
   });
- });
+});
