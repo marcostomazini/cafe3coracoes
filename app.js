@@ -1,3 +1,4 @@
+// vitormeriat@gmail.com
 //  consumer_key:        'HtP114me0TaOFYFEDDwMYA',
 //  consumer_secret:     'jyW1VCEDsAC58zXZv5m0sz8JBhN23h6QmIgMhFv0EY',
 //  access_token:        '179249265-9tO98UWDoP6NmuSdeW03aYO0dRijtGm6X0sQ9MZ5',
@@ -10,7 +11,18 @@ var express = require('express')
   , Twit = require('twit')
   , target = ['#CPBR9']
   , frase = '#CPBR9'
-  , io = require('socket.io').listen(server);
+  , io = require('socket.io').listen(server)
+  , mqtt = require('mqtt');
+
+// Parse 
+var mqtt_url = 'mqtt://localhost:1883';
+var auth = (mqtt_url.auth || ':').split(':');
+
+// Create a client connection
+var client = mqtt.createClient(mqtt_url.port, mqtt_url.hostname, {
+  username: auth[0],
+  password: auth[1] 
+}); 
 
 app.use(express.static(__dirname + '/public'));
 
@@ -42,25 +54,23 @@ var tweetsArray = [1, 5, 10, 50, 100, 200];
 
 function sendCmdArduino(cmd, callback) {
 
-    return http.get({
-        host: 'google.com.br',
-        path: '/#' + cmd
-    }, function(response) {
-        // Continuously update stream with data
-        var body = '';
-        response.on('data', function(d) {
-            body += d;
-        });
-        response.on('end', function() {
-            // Data reception is done, do whatever with it!
-            //var parsed = JSON.parse(body);
-            callback({
-                enviado: cmd,
-                password: 'parsed.pass'
-            });
-        });
+    var client = mqtt.createClient(mqtt_url.port, mqtt_url.hostname, {
+        username: auth[0],
+        password: auth[1] 
     });
+    client.on('connect', function() {
+        //client.publish('t1', new Date().toString(), function() {
+        //client.publish('t1', 'C:230|U:1020|A:1021|G:123', function() {
+        client.publish('teste', cmd, function() {
+            //client.end();            
+        });
 
+        client.subscribe('teste', function() {
+          client.on('message', function(topic, msg, pkt) {
+              console.log('data:' + msg + '\n\n');                
+          });
+      });
+    });    
 }
 
 io.sockets.on('connection', function (socket) {
@@ -76,8 +86,8 @@ io.sockets.on('connection', function (socket) {
     if (tweetsArray.indexOf(tweets) > 0) {
         tweet.coffee = 'danger';
         // disparar um get/post
-        sendCmdArduino('ligar|forte', function(teste) {
-          debugger
+        sendCmdArduino('@' + tweet.user.screen_name + '|' + tweet.text, function(teste) {
+          
         });
     }
 
